@@ -3,45 +3,18 @@ const {successHandler, errorHandler} = require("../utils/helper.responses")
 
 const uploadFile = async (req, res) => {
     try {
-        upload.single("file")(req, res, (err) => {
-            if (err) {
-                return errorHandler(
-                    res,
-                    false,
-                    400,
-                    err.message
-                )
-            }
+        if (!req.file) {
+            return errorHandler(res, false, 400, "Tidak ada file yang diupload")
+        }
 
-            if (!req.file) {
-                return errorHandler(
-                    res,
-                    false,
-                    400,
-                    "Tidak ada file yang diupload"
-                )
-            }
+        const fileUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`
 
-            const fileUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`
-
-            return successHandler(
-                res,
-                true,
-                200,
-                "File berhasil diupload", {
-                    filename: req.file.filename,
-                    path: fileUrl,
-                }
-            )
+        return successHandler(res, true, 200, "File berhasil diupload", {
+            filename: req.file.filename,
+            path: fileUrl,
         })
-
     } catch (error) {
-        
-        return errorHandler(
-            res,
-            false,
-            500,
-            `Internal Server Error: ${error.message}`)
+        return errorHandler(res, false, 500, `Internal Server Error: ${error.message}`)
     }
 }
 

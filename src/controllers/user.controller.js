@@ -57,7 +57,7 @@ const createUser = async (req, res) => {
             hashedPassword,
             verificationToken)
 
-        if (!createdUser.rowCount === 0) {
+        if (createdUser.rowCount === 0) {
 
             return errorHandler(
                 res, 
@@ -98,7 +98,7 @@ const updateUser = async (req, res) => {
 
         const updatedUser = await userModel.updateUser(userId, firstName, lastName, email, password)
 
-        if (!updatedUser.rowCount === 0) {
+        if (updatedUser.rowCount === 0) {
 
             return errorHandler(
                 res, 
@@ -139,7 +139,7 @@ const deleteUser = async (req, res) => {
         
         const deletedUser = await userModel.deleteUser(userId)
 
-        if (!deletedUser.rowCount === 0) {
+        if (deletedUser.rowCount === 0) {
 
             return errorHandler(
                 res, 

@@ -5,7 +5,11 @@ const app = express();
 const routes = require('./routes')
 const config = require('./config')
 
+app.enable('trust proxy')
+
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 

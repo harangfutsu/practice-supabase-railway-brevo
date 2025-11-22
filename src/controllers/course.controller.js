@@ -47,7 +47,7 @@ const createCourse = async (req, res) => {
         const createdCourse = await courseModel.createCourse(title, category, description, price, language)
         console.log('data createdCourse', createdCourse)
 
-        if (!createdCourse.rowCount === 0) {
+        if (createdCourse.rowCount === 0) {
 
             return errorHandler(
                 res, 
@@ -87,7 +87,7 @@ const updateCourse = async (req, res) => {
         const updatedCourse = await courseModel.updateCourse(id, title, category, description, price, language)
         console.log('data updatedCourse', updatedCourse)
 
-        if (!updatedCourse.rowCount === 0) {
+        if (updatedCourse.rowCount === 0) {
 
             return errorHandler(
                 res, 
@@ -128,7 +128,7 @@ const deleteCourse = async (req, res) => {
         
         const deletedCourse = await courseModel.deleteCourse(id)
 
-        if (!deletedCourse.rowCount === 0) {
+        if (deletedCourse.rowCount === 0) {
 
             return errorHandler(
                 res, 
