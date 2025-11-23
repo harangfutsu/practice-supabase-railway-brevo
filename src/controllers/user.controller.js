@@ -65,7 +65,11 @@ const createUser = async (req, res) => {
                 400, 
                 "Gagal membuat user")}
 
-        await sendVerificationEmail(email, verificationToken)
+        sendVerificationEmail(email, verificationToken)
+        .then((status) => {
+            if (!status) console.log("⚠️ Email verifikasi gagal dikirim ke:", email);
+        })
+        .catch((err) => console.error("Send email error:", err));
 
         return successHandler(
             res, 
