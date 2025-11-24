@@ -29,7 +29,7 @@ const sendVerificationEmail = async (to, token) => {
 
   try {
     const response = await apiInstance.sendTransacEmail(emailData);
-    console.log("Email terkirim. Message ID:", response.messageId);
+    console.log("Email terkirim. Message ID:", response);
     return true;
   } catch (error) {
     console.error("Brevo error:", error.response?.body || error);

@@ -99,8 +99,11 @@ const updateUser = async (req, res) => {
                 false, 
                 400, 
                 "Semua field wajib diisi")}
+        
+        const saltRounds = 12
+        const hashedPassword = await bcrypt.hash(password, saltRounds)
 
-        const updatedUser = await userModel.updateUser(userId, firstName, lastName, email, password)
+        const updatedUser = await userModel.updateUser(userId, firstName, lastName, email, hashedPassword)
 
         if (updatedUser.rowCount === 0) {
 
