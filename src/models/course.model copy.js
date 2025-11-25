@@ -4,41 +4,22 @@ const crypto = require('crypto')
 // GET ALL COURSE
 const getAllCourse = ({ category, language, search, sortBy, order, limit, page }) =>
     new Promise((resolve, reject) => {
-        let sql = `
-            SELECT 
-                f.feedback_id,
-                f.date,
-                f.review,
-                f.rating,
-                c.title,
-                c.category,
-                c.description,
-                c.price,
-                c.language,
-                u.fullname,
-                u.email,
-                u.gender,
-                u.country,
-                u.phone
-            FROM feedbacks f
-            LEFT JOIN courses c ON f.id_course = c.course_id
-            LEFT JOIN users u ON f.id_user = u.user_id
-        `
+        let sql = 'SELECT * FROM courses'
         const values = []
         const conditions = []
 
         if (category) {
-            conditions.push(`c.category = $${values.length + 1}`)
+            conditions.push(`category = $${values.length + 1}`)
             values.push(category)
         }
 
         if (language) {
-            conditions.push(`c.language = $${values.length + 1}`)
+            conditions.push(`language = $${values.length + 1}`)
             values.push(language)
         }
 
         if (search) {
-            conditions.push(`(c.title ILIKE $${values.length + 1} OR c.description ILIKE $${values.length + 2})`)
+            conditions.push(`(title ILIKE $${values.length + 1} OR description ILIKE $${values.length + 2})`)
             values.push(`%${search}%`, `%${search}%`)
         }
 
@@ -47,10 +28,10 @@ const getAllCourse = ({ category, language, search, sortBy, order, limit, page }
         }
 
         if (sortBy) {
-            const allowedFields = ["c.title", "c.price", "c.category", "c.language", "created_at"]
+            const allowedFields = ["title", "price", "category", "language", "created_at"]
             const allowedOrder = ["asc", "desc"]
 
-            const sortField = allowedFields.includes(sortBy) ? sortBy : "c.title"
+            const sortField = allowedFields.includes(sortBy) ? sortBy : "title"
             const sortOrder = allowedOrder.includes(order?.toLowerCase()) ? order.toUpperCase() : "ASC"
 
             sql += ` ORDER BY ${sortField} ${sortOrder}`
