@@ -12,7 +12,7 @@ const getAllCourse = ({ category, language, search, sortBy, order, limit, page }
                 c.description,
                 c.price,
                 c.language,
-                COALESCE(AVG(f.rating), 0) AS avg_rating,
+                COALESCE(ROUND(AVG(f.rating), 1), 0) AS avg_rating,
                 COUNT(f.rating) AS total_reviews
             FROM courses c
             LEFT JOIN feedbacks f ON c.course_id = f.id_course
