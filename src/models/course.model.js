@@ -7,7 +7,7 @@ const getAllCourse = ({ category, language, search, sortBy, order, limit, page }
         let sql = `
             SELECT 
                 f.feedback_id,
-                f.date,
+                f.feedback_date,
                 f.review,
                 f.rating,
                 c.title,
