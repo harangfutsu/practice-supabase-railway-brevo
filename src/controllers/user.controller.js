@@ -36,9 +36,9 @@ const getAllUsers = async (req, res) => {
 
 const createUser = async (req, res) => {
     try {
-        const {firstName, lastName, email, password } = req.body
+        const {fullName, email, gender, country, phone, password } = req.body
 
-        if (!firstName || !lastName || !email || !password) {
+        if (!fullName || !email || !gender || !country || !phone || !password) {
             return errorHandler(
                 res, 
                 false, 
@@ -51,9 +51,11 @@ const createUser = async (req, res) => {
         const verificationToken = uuidv4()
 
         const createdUser = await userModel.createUser(
-            firstName, 
-            lastName, 
-            email, 
+            fullName,  
+            email,
+            gender,
+            country,
+            phone, 
             hashedPassword,
             verificationToken)
 
@@ -76,7 +78,7 @@ const createUser = async (req, res) => {
             true, 
             201, 
             "User berhasil dibuat. Silakan cek email untuk verifikasi akun.", 
-            {firstName, lastName, email})
+            {fullName, email, gender, country, phone})
 
     } catch (error) {
 
@@ -90,9 +92,9 @@ const createUser = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         const {userId} = req.params
-        const {firstName, lastName, email, password} = req.body 
+        const {fullName, email, gender, country, phone, password} = req.body 
 
-        if (!firstName || !lastName || !email || !password) {
+        if (!fullName || !email || !gender || !country || !phone || !password) {
 
             return errorHandler(
                 res, 
@@ -103,7 +105,7 @@ const updateUser = async (req, res) => {
         const saltRounds = 12
         const hashedPassword = await bcrypt.hash(password, saltRounds)
 
-        const updatedUser = await userModel.updateUser(userId, firstName, lastName, email, hashedPassword)
+        const updatedUser = await userModel.updateUser(userId, fullName, email, gender, country, phone, hashedPassword)
 
         if (updatedUser.rowCount === 0) {
 
@@ -118,7 +120,7 @@ const updateUser = async (req, res) => {
             true, 
             200, 
             "User berhasil diperbarui", 
-            {userId, firstName, lastName, email})
+            {userId, fullName, email, gender, country, phone})
 
     } catch (error) {
 
@@ -247,9 +249,11 @@ const loginUser = async (req, res) => {
                 token,
                 user : {
                     userId : foundUser.user_id,
-                    firstName : foundUser.firstname,
-                    lastName : foundUser.lastname,
-                    email : foundUser.email
+                    fullName : foundUser.fullname,
+                    email : foundUser.email,
+                    gender : foundUser.gender,
+                    country : foundUser.country,
+                    phone : foundUser.phone
                 }
             }
         )
