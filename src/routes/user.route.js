@@ -11,4 +11,6 @@ router.post('/login', userControllers.loginUser)
 router.post('/register', userControllers.createUser)
 router.get('/verify-email', userControllers.verifyEmail)
 
+router.get('/me', authMiddleware.verifyToken, userControllers.getMe)
+
 module.exports = router

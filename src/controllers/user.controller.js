@@ -309,6 +309,46 @@ const verifyEmail = async (req, res) => {
     }
 }
 
+const getMe = async (req, res) => {
+  try {
+    // userId dari token (bukan dari params!)
+    const userId = req.user.userId;
+
+    const user = await userModel.getUserById(userId);
+
+    if (!user) {
+      return errorHandler(
+        res,
+        false,
+        404,
+        "User tidak ditemukan"
+      );
+    }
+
+    // ❗ Jangan kirim password
+    delete user.password;
+
+    console.log('data user :', user)
+
+    return successHandler(
+      res,
+      true,
+      200,
+      "Data user login",
+      user
+    );
+
+  } catch (error) {
+    return errorHandler(
+      res,
+      false,
+      500,
+      `Internal Server Error: ${error.message}`
+    );
+  }
+};
+
+
 module.exports = {
     getAllUsers,
     createUser,
@@ -316,6 +356,7 @@ module.exports = {
     deleteUser,
     getUserById,
     loginUser,
-    verifyEmail
+    verifyEmail,
+    getMe
 
 }
