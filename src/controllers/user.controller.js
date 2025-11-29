@@ -325,9 +325,6 @@ const getMe = async (req, res) => {
       );
     }
 
-    // ❗ Jangan kirim password
-    delete user.password;
-
     console.log('data user :', user)
 
     return successHandler(
